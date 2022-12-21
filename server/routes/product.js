@@ -91,8 +91,24 @@ router.post('/products', (req, res) => {
     })
   }
 
-  
 })
 
+
+router.get('/products_by_id', (req, res) => {
+  
+  // query를 사용했기 때문에 body가 아닌 query를 사용
+  let type = req.query.type
+  let productId = req.query.id
+  
+  // productId를 이용해서 DB에서 상품을 가져옴
+
+  Product.find({ _id: productId })
+        .populate('writer')
+        .exec((err, product) => {
+            if (err) return res.status(400).send(err)
+            return res.status(200).send({success: true, product})
+        })
+
+})
 
 module.exports = router;
